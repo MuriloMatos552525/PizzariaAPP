@@ -8,6 +8,7 @@ import EmployeeRegistrationScreen from './src/screens/EmployeeRegistrationScreen
 import EmployeeDetailsScreen from './src/screens/EmployeeDetailsScreen';
 import ConfirmarLimpezaScreen from './src/screens/ConfirmarLimpezaScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import DeleteEmployeeScreen from './src/screens/DeleteEmployeeScreen';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,11 @@ const App = () => {
             <Stack.Screen 
               name="Confirmar Limpeza" 
               component={ConfirmarLimpezaScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Delete Employee" 
+              component={DeleteEmployeeScreen} 
               options={{ headerShown: false }} 
             />
           </>
