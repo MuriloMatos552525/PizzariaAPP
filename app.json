@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "PizzariaManager",
+    "slug": "projetogif-pm",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logoPizzaria.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/wait.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#0E0E0E"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logoPizzaria.png",
+        "backgroundColor": "#0E0E0E"
+      },
+      "package": "com.murilomatos.PizzariaAPP"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "firebaseConfig": {
+        "apiKey": "AIzaSyADEMBW55rB6H9TDXpQsNvAv4GZyWfbPc0",
+        "authDomain": "bellaitalia-5b526.firebaseapp.com",
+        "projectId": "bellaitalia-5b526",
+        "storageBucket": "bellaitalia-5b526.appspot.com",
+        "messagingSenderId": "955055294238",
+        "appId": "1:955055294238:web:f12a9696e6fd7469106b0f",
+        "measurementId": "G-W2NQF7PL6S"
+      },
+      "eas": {
+        "projectId": "985bb863-3ad3-4eaf-9c0e-60b3fee410ad"
+      }
+    },
+    "owner": "murilomatos01"
+  }
+}
