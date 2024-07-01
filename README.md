@@ -76,4 +76,3 @@ Murilo Matos - [murilocarlosm@hotmail.com](mailto:murilocarlosm@hotmail.com)
 Link do Projeto: [https://github.com/MuriloMatos552525/PizzariaManager](https://github.com/MuriloMatos552525/PizzariaManager)
 ```
 
-Este README.md fornece uma visão geral completa do projeto, incluindo instruções de instalação, desenvolvimento, construção e contribuição. Certifique-se de atualizar os links e as informações de contato conforme necessário para refletir seu projeto específico.
