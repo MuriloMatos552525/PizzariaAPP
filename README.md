@@ -1,43 +1,123 @@
-# MovieMu Checkpoint 2 - MOBILE APPLICATION DEVELOPMENT
+Claro! Aqui está um exemplo de um README.md para o seu projeto "PizzariaManager" usando Expo:
 
-## Sobre o App
+```markdown
+# PizzariaManager
 
-O MovieMu é um aplicativo móvel desenvolvido em React Native que permite aos usuários explorar e acompanhar filmes. Com uma interface intuitiva e recursos completos, o MovieMu é sua fonte de informações sobre filmes, fornecendo detalhes, trailers e a capacidade de marcar filmes como favoritos.
+PizzariaManager é um aplicativo gerencial para uma pizzaria, desenvolvido com React Native e Expo. O aplicativo permite registrar funcionários, gerenciar vales e atualizar informações salariais.
 
-## Modo de Uso
+## Funcionalidades
 
-Para começar a usar o MovieMu, siga estas etapas simples:
+- Registro de funcionários
+- Atualização de informações salariais
+- Registro de vales
+- Limpeza de vales
+- Autenticação de usuários
 
-1. Clone ou faça o download do repositório para o seu dispositivo.
+## Pré-requisitos
 
-2. Certifique-se de ter o Node.js instalado em sua máquina.
+Certifique-se de ter o Node.js e o npm instalados em sua máquina. Você também precisará do Expo CLI e do EAS CLI.
 
-3. No terminal, navegue até o diretório do projeto e execute `npm install` para instalar as dependências.
+## Instalação
 
-4. Execute `npm start` para iniciar o servidor de desenvolvimento.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/PizzariaManager.git
+   cd PizzariaManager
+   ```
 
-5. Abra o aplicativo em um emulador ou dispositivo móvel para começar a explorar os filmes!
-   
-6.Ao clicar na logo do app voce encontrara a tela de desenvolvedores 
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-## Funções Atuais
+3. Configure o EAS CLI:
+   ```bash
+   npm install -g eas-cli
+   eas build:configure
+   ```
 
-### 1. Explorar Filmes
-   - Visualize diferentes seções de filmes, como "Filmes Populares", "Filmes Mais Bem Avaliados" e "Próximos Lançamentos".
+4. Configure o arquivo `app.json` com suas próprias credenciais do Firebase e configurações do aplicativo.
 
-### 2. Detalhes do Filme
-   - Veja detalhes de um filme específico, incluindo título, visão geral, data de lançamento e poster.
-   - Adicione filmes aos favoritos para acompanhá-los posteriormente.
+## Desenvolvimento
 
-### 3. Pesquisa de Filmes
-   - Pesquise filmes por título.
-   - Obtenha sugestões de filmes populares enquanto digita na barra de pesquisa.
+Para iniciar o servidor de desenvolvimento, execute:
+```bash
+npx expo start
+```
 
-### 4. Filmes Favoritos
-   - Veja uma lista dos filmes marcados como favoritos.
-   - Remova filmes da lista de favoritos conforme necessário.
+Para iniciar o aplicativo no navegador, execute:
+```bash
+npx expo start --web
+```
 
-## Versão Atual
+## Construção e Distribuição
 
-O MovieMu está atualmente na versão 0.5, oferecendo uma experiência inicial de navegação e descoberta de filmes. Estamos constantemente trabalhando para melhorar e adicionar novos recursos ao aplicativo.
+Para construir o aplicativo para iOS e Android, use o EAS Build.
 
+### iOS
+
+Certifique-se de que você está inscrito no Apple Developer Program.
+
+1. Construa o aplicativo:
+   ```bash
+   eas build --platform ios
+   ```
+
+2. Envie para o TestFlight:
+   ```bash
+   eas submit -p ios --latest
+   ```
+
+### Android
+
+1. Construa o aplicativo:
+   ```bash
+   eas build --platform android
+   ```
+
+2. Envie para a Google Play Store:
+   ```bash
+   eas submit -p android --latest
+   ```
+
+## Estrutura do Projeto
+
+```plaintext
+PizzariaManager/
+├── assets/                 # Assets como ícones e imagens
+├── src/                    # Código fonte do aplicativo
+│   ├── screens/            # Telas do aplicativo
+│   │   ├── HomeScreen.tsx
+│   │   ├── ValeRegistrationScreen.tsx
+│   │   ├── EmployeeRegistrationScreen.tsx
+│   │   ├── EmployeeDetailsScreen.tsx
+│   │   ├── ConfirmarLimpezaScreen.tsx
+│   │   └── DeleteEmployeeScreen.tsx
+│   ├── services/           # Serviços e configurações
+│   │   └── firebaseConfig.ts
+│   └── App.tsx             # Componente raiz do aplicativo
+├── app.json                # Configurações do Expo
+├── eas.json                # Configurações do EAS
+└── package.json            # Dependências e scripts do npm
+```
+
+## Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/fooBar`)
+3. Commit suas alterações (`git commit -am 'Add some fooBar'`)
+4. Envie para a branch (`git push origin feature/fooBar`)
+5. Crie um novo Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a MIT License.
+
+## Contato
+
+Murilo Matos - [murilocarlosm@hotmail.com](mailto:murilocarlosm@hotmail.com)
+
+Link do Projeto: [https://github.com/MuriloMatos552525/PizzariaManager](https://github.com/MuriloMatos552525/PizzariaManager)
+```
+
+Este README.md fornece uma visão geral completa do projeto, incluindo instruções de instalação, desenvolvimento, construção e contribuição. Certifique-se de atualizar os links e as informações de contato conforme necessário para refletir seu projeto específico.
