@@ -4,7 +4,7 @@
     "slug": "projetogif-pm",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logoPizzaria.png",
+    "icon": "./assets/logoPizzaria.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/wait.jpg",
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logoPizzaria.png",
+        "foregroundImage": "./assets/logoPizzaria.jpg",
         "backgroundColor": "#0E0E0E"
       },
       "package": "com.murilomatos.PizzariaAPP"

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, SafeAreaView, Platform, StatusBar } from 'react-native';
-import { db } from '../services/firebaseConfig';
+import { db, auth } from '../services/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
+import { signOut } from "firebase/auth";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 type RootStackParamList = {
   'Registrar Vale': { employee: Employee };
@@ -74,6 +76,15 @@ const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigation.navigate('Login'); // Navega para a tela de login após deslogar
+    } catch (error) {
+      console.error("Erro ao deslogar: ", error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchEmployeesAndVales();
@@ -85,9 +96,14 @@ const HomeScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={styles.outerContainer}>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Vales Q Bella Italia</Text>
+    <SafeAreaView style={styles.outerContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Ionicons name="log-out-outline" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Vales Q Bella Italia</Text>
+        </View>
         <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Registrar Funcionário')}>
           <Text style={styles.registerButtonText}>Registrar Funcionário</Text>
         </TouchableOpacity>
@@ -117,8 +133,8 @@ const HomeScreen = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.cleanButton} onPress={() => navigation.navigate('Confirmar Limpeza')}>
           <Text style={styles.cleanButtonText}>Limpar Vales</Text>
         </TouchableOpacity>
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -126,26 +142,32 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     backgroundColor: '#0E0E0E',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
     padding: 20,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 20,
   },
   loadingText: {
     color: '#FFFFFF',
+    textAlign: 'center',
+    marginTop: 20,
   },
   employeeContainer: {
     padding: 20,
-    borderRadius: 8,
-    backgroundColor: '#1C1C1C',
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -154,7 +176,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   employeeName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
@@ -207,6 +229,9 @@ const styles = StyleSheet.create({
   cleanButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+  },
+  logoutButton: {
+    padding: 10,
   },
 });
 
