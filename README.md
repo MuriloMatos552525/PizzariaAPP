@@ -1,6 +1,4 @@
-Claro! Aqui está um exemplo de um README.md para o seu projeto "PizzariaManager" usando Expo:
 
-```markdown
 # PizzariaManager
 
 PizzariaManager é um aplicativo gerencial para uma pizzaria, desenvolvido com React Native e Expo. O aplicativo permite registrar funcionários, gerenciar vales e atualizar informações salariais.
@@ -30,13 +28,6 @@ Certifique-se de ter o Node.js e o npm instalados em sua máquina. Você também
    npm install
    ```
 
-3. Configure o EAS CLI:
-   ```bash
-   npm install -g eas-cli
-   eas build:configure
-   ```
-
-4. Configure o arquivo `app.json` com suas próprias credenciais do Firebase e configurações do aplicativo.
 
 ## Desenvolvimento
 
@@ -44,41 +35,6 @@ Para iniciar o servidor de desenvolvimento, execute:
 ```bash
 npx expo start
 ```
-
-Para iniciar o aplicativo no navegador, execute:
-```bash
-npx expo start --web
-```
-
-## Construção e Distribuição
-
-Para construir o aplicativo para iOS e Android, use o EAS Build.
-
-### iOS
-
-Certifique-se de que você está inscrito no Apple Developer Program.
-
-1. Construa o aplicativo:
-   ```bash
-   eas build --platform ios
-   ```
-
-2. Envie para o TestFlight:
-   ```bash
-   eas submit -p ios --latest
-   ```
-
-### Android
-
-1. Construa o aplicativo:
-   ```bash
-   eas build --platform android
-   ```
-
-2. Envie para a Google Play Store:
-   ```bash
-   eas submit -p android --latest
-   ```
 
 ## Estrutura do Projeto
 
