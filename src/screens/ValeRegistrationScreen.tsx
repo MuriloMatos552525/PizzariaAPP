@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Keyboard, TouchableWithoutFeedback, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Keyboard, TouchableWithoutFeedback, SafeAreaView, Platform, StatusBar, Alert } from 'react-native';
 import { db } from '../services/firebaseConfig';
 import { collection, addDoc } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
@@ -37,6 +37,11 @@ const ValeRegistrationScreen = ({ route, navigation }: Props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleRegister = async () => {
+    if (!title || !amount || isNaN(parseFloat(amount))) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos corretamente.');
+      return;
+    }
+
     try {
       const auth = getAuth();
       if (auth.currentUser) {

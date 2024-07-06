@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, Platform, StatusBar, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Platform, StatusBar, TouchableOpacity, Modal, TextInput, Alert, Keyboard } from 'react-native';
 import { db } from '../services/firebaseConfig';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, collection, getDocs, query, where, writeBatch, deleteDoc } from 'firebase/firestore';
+import { Swipeable } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const EmployeeDetailsScreen = ({ route, navigation }) => {
   const { employee } = route.params;
@@ -9,7 +12,12 @@ const EmployeeDetailsScreen = ({ route, navigation }) => {
   const [salary, setSalary] = useState(employee.salary);
   const [valeTransporte, setValeTransporte] = useState(employee.valeTransporte);
   const [modalVisible, setModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [selectedVale, setSelectedVale] = useState(null);
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const finalSalary = salary + valeTransporte - (employee.totalVales ? employee.totalVales : 0);
 
@@ -28,10 +36,81 @@ const EmployeeDetailsScreen = ({ route, navigation }) => {
     }
   };
 
-  const handleDeletePress = () => {
-    setModalVisible(false); // Feche o modal de atualização de salário
-    navigation.navigate('Delete Employee', { employeeId: employee.id }); // Navegue para a tela de exclusão
+  const handleDeleteVales = async () => {
+    try {
+      const valesQuery = query(collection(db, 'vales'), where('employeeName', '==', employee.name));
+      const valesSnapshot = await getDocs(valesQuery);
+      const batch = writeBatch(db);
+
+      valesSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+      Alert.alert('Sucesso', 'Todos os vales do funcionário foram limpos.');
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Erro ao apagar vales: ', error);
+      Alert.alert('Erro', 'Erro ao apagar os vales do funcionário');
+    }
   };
+
+  const handleDeleteVale = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'vales', id));
+      Alert.alert('Sucesso', 'Vale apagado com sucesso.');
+      // Atualizar a lista de vales após a exclusão
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Erro ao apagar vale: ', error);
+      Alert.alert('Erro', 'Erro ao apagar o vale');
+    }
+  };
+
+  const handleEditVale = async () => {
+    try {
+      if (selectedVale) {
+        const valeRef = doc(db, 'vales', selectedVale.id);
+        await updateDoc(valeRef, {
+          title,
+          amount: parseFloat(amount),
+          date,
+        });
+        Alert.alert('Sucesso', 'Vale atualizado com sucesso.');
+        setEditModalVisible(false);
+        // Atualizar a lista de vales após a alteração
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar vale: ', error);
+      Alert.alert('Erro', 'Erro ao atualizar o vale');
+    }
+  };
+
+  const openEditModal = (vale) => {
+    setSelectedVale(vale);
+    setTitle(vale.title);
+    setAmount(vale.amount.toString());
+    setDate(new Date(vale.date.seconds * 1000));
+    setEditModalVisible(true);
+  };
+
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
+
+  const renderRightActions = (vale) => (
+    <View style={styles.swipeContainer}>
+      <TouchableOpacity style={styles.iconButton} onPress={() => openEditModal(vale)}>
+        <Icon name="edit" size={24} color="#FFFFFF" />
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.iconButton, styles.deleteButton]} onPress={() => handleDeleteVale(vale.id)}>
+        <Icon name="trash" size={24} color="#FFFFFF" />
+      </TouchableOpacity>
+    </View>
+  );
 
   const sortedVales = employee.vales?.sort((a, b) => b.date.seconds - a.date.seconds);
 
@@ -48,16 +127,21 @@ const EmployeeDetailsScreen = ({ route, navigation }) => {
         <TouchableOpacity style={styles.updateButton} onPress={() => setModalVisible(true)}>
           <Text style={styles.updateButtonText}>Alterar Informações</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.cleanButton} onPress={handleDeleteVales}>
+          <Text style={styles.cleanButtonText}>Limpar Vales</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={sortedVales}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <View style={styles.valeContainer}>
-            <Text style={styles.valeTitle}>Título: {item.title}</Text>
-            <Text style={styles.text}>Valor: R${item.amount ? item.amount.toFixed(2) : '0.00'}</Text>
-            <Text style={styles.text}>Data: {new Date(item.date.seconds * 1000).toLocaleDateString()}</Text>
-          </View>
+          <Swipeable renderRightActions={() => renderRightActions(item)}>
+            <View style={styles.valeContainer}>
+              <Text style={styles.valeTitle}>Título: {item.title}</Text>
+              <Text style={styles.text}>Valor: R${item.amount ? item.amount.toFixed(2) : '0.00'}</Text>
+              <Text style={styles.text}>Data: {new Date(item.date.seconds * 1000).toLocaleDateString()}</Text>
+            </View>
+          </Swipeable>
         )}
       />
       <Modal
@@ -95,9 +179,59 @@ const EmployeeDetailsScreen = ({ route, navigation }) => {
                 <Text style={styles.modalButtonText}>Cancelar</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.deleteButton} onPress={handleDeletePress}>
-              <Text style={styles.deleteButtonText}>Apagar Funcionário</Text>
-            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={editModalVisible}
+        onRequestClose={() => setEditModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Alterar Vale</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Título:</Text>
+              <TextInput
+                style={styles.input}
+                value={title}
+                onChangeText={setTitle}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Valor:</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={amount}
+                onChangeText={setAmount}
+                onBlur={() => Keyboard.dismiss()}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Data:</Text>
+              <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
+                <Text style={styles.dateButtonText}>{date.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={onChangeDate}
+                />
+              )}
+            </View>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalButton} onPress={handleEditVale}>
+                <Text style={styles.modalButtonText}>Salvar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={() => setEditModalVisible(false)}>
+                <Text style={styles.modalButtonText}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -170,12 +304,19 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
   },
-  deleteButton: {
+  cleanButton: {
     backgroundColor: '#D32F2F',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 10,
+  },
+  cleanButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  deleteButton: {
+    backgroundColor: '#D32F2F',
   },
   deleteButtonText: {
     color: '#FFFFFF',
@@ -257,6 +398,30 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+  },
+  swipeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  iconButton: {
+    backgroundColor: '#018037',
+    padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 75,
+  },
+  dateButton: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#A0A0A0',
+    borderWidth: 1,
+    borderRadius: 8,
+    backgroundColor: '#1C1C1C',
+  },
+  dateButtonText: {
+    fontSize: 16,
+    color: '#FFFFFF',
   },
 });
 
