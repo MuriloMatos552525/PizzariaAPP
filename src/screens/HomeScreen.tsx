@@ -12,6 +12,7 @@ type RootStackParamList = {
   'Registrar Funcionário': undefined;
   'Detalhes do Funcionário': { employee: Employee };
   'Confirmar Limpeza': undefined;
+  'Gestão Financeira': undefined;
   Home: undefined;
 };
 
@@ -133,6 +134,9 @@ const HomeScreen = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.cleanButton} onPress={() => navigation.navigate('Confirmar Limpeza')}>
           <Text style={styles.cleanButtonText}>Limpar Vales</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.financeButton} onPress={() => navigation.navigate('Gestão Financeira')}>
+          <Text style={styles.financeButtonText}>Gestão Financeira</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -227,6 +231,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cleanButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  financeButton: {
+    backgroundColor: '#018037',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  financeButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
   },

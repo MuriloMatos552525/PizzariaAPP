@@ -9,6 +9,12 @@ import EmployeeDetailsScreen from './src/screens/EmployeeDetailsScreen';
 import ConfirmarLimpezaScreen from './src/screens/ConfirmarLimpezaScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import DeleteEmployeeScreen from './src/screens/DeleteEmployeeScreen';
+import CloseCashRegisterScreen from './src/screens/CloseCashRegisterScreen';
+import CashRegisterHistoryScreen from './src/screens/CashRegisterHistoryScreen';
+import ProfitLossReportScreen from './src/screens/ProfitLossReportScreen';
+import TrendAnalysisScreen from './src/screens/TrendAnalysisScreen';
+import FinancialDashboardScreen from './src/screens/FinancialDashboardScreen';
+import FinancialManagementScreen from './src/screens/FinancialManagementScreen';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +68,36 @@ const App = () => {
             <Stack.Screen 
               name="Delete Employee" 
               component={DeleteEmployeeScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Fechamento de Caixa" 
+              component={CloseCashRegisterScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Histórico de Caixa" 
+              component={CashRegisterHistoryScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Relatório de Lucros e Perdas" 
+              component={ProfitLossReportScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Análise de Tendências" 
+              component={TrendAnalysisScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Dashboard Financeiro" 
+              component={FinancialDashboardScreen} 
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="Gestão Financeira" 
+              component={FinancialManagementScreen} 
               options={{ headerShown: false }} 
             />
           </>
